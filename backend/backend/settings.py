@@ -1,4 +1,5 @@
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,10 +77,29 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'recrutement_db',        # Le nom de ta base de données MySQL
+        'USER': 'root',                  # Ton nom d'utilisateur MySQL (par défaut "root")
+        'PASSWORD': '',  # Ton mot de passe MySQL
+        'HOST': 'localhost',             # Adresse du serveur MySQL
+        'PORT': '3306',                  # Port MySQL par défaut
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ajeangael@gmail.com'  # Remplace par ton adresse Gmail
+EMAIL_HOST_PASSWORD = 'sjpjsfxuygupvnxf'  # Remplace par le mot de passe ou App Password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 
 
 # Password validation
