@@ -1,26 +1,37 @@
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
-from django.urls import path
+urlpatterns = [
+    # ==================== OFFRES ====================
+    path('api/offres/', views.liste_offres, name='liste_offres'),
+    path('api/offres/ajout/', views.ajout_offre, name='ajout_offre'),
+    path('api/offres/<int:offre_id>/modifier/', views.modifier_offre, name='modifier_offre'),
+    path('api/offres/<int:offre_id>/supprimer/', views.supprimer_offre, name='supprimer_offre'),
 
-from .views import AjoutOffre
-from .views import modifier_offre
-from .views import supprimer_offre
-from .views import AjoutCAndidature
-from . views import modifier_candidature
-from . views import supprimer_candidature
+    # ==================== CANDIDATURES ====================
+    path('api/candidatures/', views.liste_candidatures, name='liste_candidatures'),
+    path('api/candidatures/ajout/', views.ajout_candidature, name='ajout_candidature'),
+    path('api/candidatures/<int:candidature_id>/modifier/', views.modifier_candidature, name='modifier_candidature'),
+    path('api/candidatures/<int:candidature_id>/supprimer/', views.supprimer_candidature, name='supprimer_candidature'),
 
-urlpatterns =[
-   
-    
-    path('ajout1',AjoutOffre, name= 'AjoutOffre'),
-    path('api/offres/<int:offre_id>/modifier/', modifier_offre, name='modifier_offre'),
-    path('api/offres/<int:offre_id>/supprimer/', supprimer_offre, name='supprimer_offre'),
+    # ==================== EVALUATIONS ====================
+    path('api/evaluations/', views.liste_evaluations, name='liste_evaluations'),
+    path('api/evaluations/ajout/', views.ajout_evaluation, name='ajout_evaluation'),
+    path('api/evaluations/<int:evaluation_id>/modifier/', views.modifier_evaluation, name='modifier_evaluation'),
+    path('api/evaluations/<int:evaluation_id>/supprimer/', views.supprimer_evaluation, name='supprimer_evaluation'),
+    path('api/evaluations/<int:evaluation_id>/send_email/', views.send_evaluation_email_to_all, name='send_email_evaluation'),
+  
 
-    path('ajout2', AjoutCAndidature, name= 'AjoutCAndidature'),
-    path('modifier2', modifier_candidature, name= 'modifier_candidature'),
-    path('suprimer2',supprimer_candidature, name= 'supprimer_candidature'),
-
-    
+    # ==================== RESULTATS ====================
+    path('api/resultats/', views.liste_resultats, name='liste_resultats'),
+    path('api/resultats/ajout/', views.ajout_resultat, name='ajout_resultat'),
+    path('api/resultats/<int:resultat_id>/modifier/', views.modifier_resultat, name='modifier_resultat'),
+    path('api/resultats/<int:resultat_id>/supprimer/', views.supprimer_resultat, name='supprimer_resultat'),
 
 ]
+
+# ==================== MEDIA FILES ====================
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

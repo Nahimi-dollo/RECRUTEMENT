@@ -1,5 +1,7 @@
 
 from pathlib import Path
+from django.db.backends.mysql.base import DatabaseWrapper
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +16,7 @@ SECRET_KEY = 'django-insecure-msbo99%v$k1s869j-=djd_8f86)9v$zydjy5bibi#6v6s6hvui
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -29,28 +31,30 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'dollo',
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # DOIT ÊTRE EN HAUT
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-   'corsheaders.middleware.CorsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS=[
-    'http://localhost:5173',
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5180",
+    "http://127.0.0.1:5180",
 ]
-REST_FRAMEWORK={
-    
-        'DEFAULT_PERMISSION_CLASSES':[
-            'rest_framework.permissions.AllowAny',
-        ]
-    
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
 }
+
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -74,19 +78,25 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+DatabaseWrapper.data_types['CharField'] = 'varchar(%(max_length)s)'
+DatabaseWrapper.data_types['EmailField'] = 'varchar(%(max_length)s)'
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'recrutement_db',
-        'USER':'root',
-        'PASSWORD':'',
-        'HOST':'localhost',
-        'PORT':'3306',
-        'OPTIONS':{
-            'init_command':"SET sql_mode='STRICT_TRANS_TABLES'",
-        }
+        'NAME': 'recrutement_db',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
+
 
 
 # Password validation
@@ -128,7 +138,22 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# ======== CONFIGURATION EMAIL ======== #
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587  
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = 'dollonaomi@gmail.com'  
+EMAIL_HOST_PASSWORD = 'xdhtcxahgzrjssnn'  
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  
+
+
+X_FRAME_OPTIONS = 'ALLOWALL'
