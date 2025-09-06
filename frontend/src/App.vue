@@ -17,7 +17,7 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get('http://localhost:8000/dollo/hello');
+      const response = await axios.get('http://localhost:8000/dollo/test2');
       this.message = response.data.message;
     } catch (error) {
       this.message = 'Erreur de connexion au backend';
